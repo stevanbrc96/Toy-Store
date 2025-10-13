@@ -1,26 +1,25 @@
-<!-- 1. Uključujemo Hero komponentu (Bootstrap Carousel) na vrh stranice -->
 <app-hero></app-hero>
 
-<!-- 2. Glavni kontejner za katalog. Dodajemo margine (my-5) -->
 <div class="container my-5">
   <header class="text-center mb-5">
     <h1 class="display-4">Naš Katalog</h1>
     <p class="lead text-muted">Sve igračke na jednom mestu</p>
   </header>
 
-  <!-- Bootstrap Grid sistem za prikazivanje kartica -->
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    <!-- Koristimo *ngFor petlju da prođemo kroz sve igračke iz signala -->
     <div class="col" *ngFor="let igracka of sveIgracke()">
       <div class="card h-100 shadow-sm">
-        <!-- Prikazujemo sliku igračke -->
-        <img [src]="utils.getImageUrl(igracka.imageUrl)" class="card-img-top" [alt]="igracka.name" style="height: 250px; object-fit: cover;">
+        <img
+          [src]="utils.getImageUrl(igracka.imageUrl)"
+          class="card-img-top"
+          [alt]="igracka.name"
+          style="height: 250px; object-fit: cover"
+        />
 
         <div class="card-body d-flex flex-column">
           <h5 class="card-title">{{ igracka.name }}</h5>
           <p class="card-text text-muted small">{{ igracka.description }}</p>
 
-          <!-- Lista sa dodatnim detaljima -->
           <ul class="list-group list-group-flush mt-3">
             <li class="list-group-item">
               <i class="fas fa-puzzle-piece text-primary me-2"></i>
@@ -32,28 +31,23 @@
             </li>
             <li class="list-group-item">
               <i class="fas fa-tag text-primary me-2"></i>
-              <strong>Cena:</strong> {{ igracka.price | currency:'RSD ' }}
+              <strong>Cena:</strong> {{ igracka.price | currency : 'RSD ' }}
             </li>
           </ul>
 
-          <!-- Ovaj div gura grupu dugmadi na dno kartice -->
           <div class="mt-auto pt-3">
-            <!-- 
-              Koristimo 'btn-group' da spojimo dva dugmeta.
-              'w-100' osigurava da grupa zauzme punu širinu.
-            -->
             <div class="btn-group w-100" role="group" aria-label="Akcije za igračku">
-              
-              <!-- Dugme za Detalje (link) -->
-              <a [routerLink]="['/igracka', igracka.toyId]" class="btn btn-outline-primary" title="Pogledaj detalje">
-                 <i class="fa-solid fa-info"></i> Detalji
+              <a
+                [routerLink]="['/igracka', igracka.toyId]"
+                class="btn btn-outline-primary"
+                title="Pogledaj detalje"
+              >
+                <i class="fa-solid fa-info"></i> Detalji
               </a>
-  
-              <!-- Dugme za Rezervaciju (akcija) -->
-              <button type="button" class="btn btn-primary"  title="Rezerviši igračku">
-                 <i class="fa-solid fa-cart-shopping"></i>Rezerviši
+
+              <button type="button" class="btn btn-primary" title="Rezerviši igračku">
+                <i class="fa-solid fa-cart-shopping"></i>Rezerviši
               </button>
-  
             </div>
           </div>
         </div>
