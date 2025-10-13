@@ -1,0 +1,16 @@
+    .carousel-item {
+      max-height: 600px;
+
+      img {
+        object-fit: cover;
+        filter: brightness(70%);
+      }
+    }
+
+
+
+    .carousel-caption {
+      bottom: 4rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+  
