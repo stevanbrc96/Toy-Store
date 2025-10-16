@@ -1,0 +1,28 @@
+.nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 0;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease-in-out;
+
+  i {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  span {
+    font-size: 0.7rem;
+  }
+
+  &.active,
+  &:hover {
+    color: #fff;
+  }
+}
+
+
+.nav-item {
+  
+  flex-grow: 1;
+}

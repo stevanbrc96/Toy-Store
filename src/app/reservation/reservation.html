@@ -1,0 +1,39 @@
+<div class="container my-5">
+  @if (igracka()) {
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h1 class="display-5 mb-4">Potvrda Rezervacije</h1>
+        <div class="card shadow">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img [src]="utils.getImageUrl(igracka()!.imageUrl)" class="img-fluid rounded-start" [alt]="igracka()!.name">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h3 class="card-title">{{ igracka()!.name }}</h3>
+                <p class="card-text text-muted">{{ igracka()!.description }}</p>
+                <hr>
+                <p class="card-text fs-4"><strong>Cena:</strong> {{ igracka()!.price | currency:'RSD ' }}</p>
+                <div class="d-grid gap-2 mt-4">
+                  <button class="btn btn-success btn-lg" (click)="potvrdiRezervaciju()">
+                    <i class="fas fa-check-circle me-2"></i> Potvrdi Rezervaciju
+                  </button>
+                  <a routerLink="/" class="btn btn-outline-secondary">
+                    <i class="fas fa-times me-2"></i> Odustani
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Učitavanje...</span>
+      </div>
+      <p class="mt-3">Učitavanje podataka o igrački...</p>
+    </div>
+  }
+</div>

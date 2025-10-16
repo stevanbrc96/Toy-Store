@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { IgrackaService } from '../../../services/igracka.service';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-top-bar',
   standalone: true,
   imports: [RouterLink, RouterLinkActive, FormsModule],
-  templateUrl: './navbar.html',
-  styleUrls: ['./navbar.scss']
+  templateUrl: './top-bar.html',
+  styleUrls: ['./top-bar.scss']
 })
-export class NavbarComponent {
+export class TopBarComponent {
   constructor(
     public igrackaService: IgrackaService,
     private router: Router

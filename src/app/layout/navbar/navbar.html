@@ -1,11 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary  fixed-top shadow" style="background-color: #2c2b2b;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
   <div class="container">
-    <a class="navbar-brand fw-bold d-flex align-items-center" routerLink="/">
-      <img src="/logo.png" alt="Logo Prodavnice Igračaka" class="navbar-logo me-2">
-      
-    
+    <a class="navbar-brand" routerLink="/">
+      <img src="/logo.png" alt="Logo Prodavnice Igračaka" class="navbar-logo">
     </a>
-    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="mainNavbar">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
@@ -13,38 +13,23 @@
             <i class="fas fa-home me-1"></i>Katalog
           </a>
         </li>
+      </ul>
+
+      <div class="d-flex" role="search">
+        <input class="form-control form-control-sm" type="search" placeholder="Pretraži igračke..." aria-label="Search"
+               [ngModel]="igrackaService.searchTerm()" 
+               (ngModelChange)="igrackaService.searchTerm.set($event); onSearchChange()">
+      </div>
+
+      <ul class="navbar-nav ms-lg-3 mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/about">
-            <i class="fas fa-info-circle me-1"></i>O Nama
+          <a class="nav-link" routerLink="/prijava" routerLinkActive="active">
+            <i class="fas fa-sign-in-alt me-1"></i> Prijavi se
           </a>
         </li>
-      </ul>
-      <ul class="navbar-nav mb-2 mb-lg-0">
-        @if(hasAuth()) {
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fas fa-user me-1"></i> {{ currentUser()!.email }}
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" routerLink="/profile">Moj Profil</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li>
-                <button class="dropdown-item" (click)="logoutNow()">
-                  <i class="fas fa-sign-out-alt me-1"></i> Odjavi se
-                </button>
-              </li>
-            </ul>
-          </li>
-        } @else {
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/login">
-              <i class="fas fa-sign-in-alt me-1"></i> Prijavi se
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="btn btn-outline-light btn-sm mt-1 ms-lg-2" routerLink="/register">Registruj se</a>
-          </li>
-        }
+        <li class="nav-item">
+          <a class="btn btn-outline-light btn-sm mt-1 ms-lg-2" routerLink="/registracija">Registruj se</a>
+        </li>
       </ul>
     </div>
   </div>
