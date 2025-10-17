@@ -1,4 +1,3 @@
-
 export interface Igracka {
   toyId: number;
   name: string;
@@ -8,6 +7,7 @@ export interface Igracka {
   productionDate: string;
   price: number;
   imageUrl: string;
+  rating?: number; 
   ageGroup: {
     ageGroupId: number;
     name: string;

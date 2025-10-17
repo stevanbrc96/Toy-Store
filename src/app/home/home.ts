@@ -1,21 +1,25 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { CurrencyPipe, NgFor } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IgrackaService } from '../../services/igracka.service';
 import { Utils } from '../utils';
+import { StarRating } from '../star-rating/star-rating';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     CurrencyPipe,
-    FormsModule
+    NgFor,
+    RouterLink,
+    FormsModule,
+    StarRating
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
   constructor(
     public igrackaService: IgrackaService,
@@ -23,8 +27,6 @@ export class HomeComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-  }
 
   goToDetails(toyId: number): void {
     this.router.navigate(['/igracka', toyId]);
@@ -35,3 +37,4 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/rezervisi', toyId]);
   }
 }
+

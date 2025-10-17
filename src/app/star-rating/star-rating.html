@@ -1,0 +1,8 @@
+<div class="rating-stars d-flex align-items-center">
+  <div class="stars-wrapper">
+    <span class="star" *ngFor="let i of stars">
+      <i class="fas fa-star" [class.filled]="i < rating"></i>
+    </span>
+  </div>
+  <span class="rating-text ms-2">({{ rating.toFixed(1) }})</span>
+</div>
