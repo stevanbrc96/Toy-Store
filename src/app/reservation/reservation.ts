@@ -1,24 +1,25 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { Igracka } from '../../models/igracka.model';
 import { IgrackaService } from '../../services/igracka.service';
+import { KorpaService } from '../../services/shopping-basket.service';
 import { Utils } from '../utils';
 
 @Component({
   selector: 'app-reservation',
   standalone: true,
   imports: [CurrencyPipe, RouterLink],
-  templateUrl: './reservation.html',
-  styleUrls: ['./reservation.scss']
+  templateUrl: './reservation.html'
 })
 export class Reservation implements OnInit {
-
   igracka = signal<Igracka | null>(null);
 
   constructor(
     private route: ActivatedRoute,
     private igrackaService: IgrackaService,
+    private korpaService: KorpaService,
+    private router: Router,
     public utils: Utils
   ) {}
 
@@ -31,10 +32,10 @@ export class Reservation implements OnInit {
   }
 
   potvrdiRezervaciju(): void {
-    if (this.igracka()) {
-      console.log('Potvrđena rezervacija za:', this.igracka()!.name);
-      // TODO: Implementirati logiku za slanje rezervacije,
-      // i prikazati korisniku poruku o uspehu.
+    const trenutnaIgracka = this.igracka();
+    if (trenutnaIgracka) {
+      this.korpaService.dodajUKorpu(trenutnaIgracka);
+      this.router.navigate(['/korpa']); // Preusmeravamo korisnika direktno u korpu
     }
   }
 }

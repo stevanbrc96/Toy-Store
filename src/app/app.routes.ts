@@ -5,15 +5,15 @@ import { Reservation } from './reservation/reservation';
 import { Login } from './login/login';
 import { Profile } from './profile/profile';
 import { Signup } from './signup/signup';
+import { Cart } from './shopping-basket/shopping-basket'; 
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'igracka/:toyId', component: ToyDetails },
   { path: 'rezervisi/:toyId', component: Reservation },
-  
-  { path: 'prijava', component: Login },
-  { path: 'registracija', component: Signup },
+  { path: 'login', component: Login },
+  { path: 'signup', component: Signup },
   { path: 'profil', component: Profile },
-  
-  { path: 'signup', component: Signup }
+  { path: 'korpa', component: Cart },
+  { path: '**', redirectTo: '' }
 ];

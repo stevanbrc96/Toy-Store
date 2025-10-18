@@ -4,6 +4,7 @@ export interface UserModel {
   lastName: string;
   phoneNumber: string;
   email: string;
+  address: string;
   password?: string; 
   favoriteToy: string;
 }

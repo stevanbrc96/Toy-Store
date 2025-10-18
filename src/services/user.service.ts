@@ -9,12 +9,18 @@ export class UserService {
   public currentUser = signal<UserModel | null>(null);
 
   // Simulirana "baza podataka" korisnika
-  private users: UserModel[] = [
-    {
-      id: 1, firstName: 'Petar', lastName: 'Petrović', email: 'petar@primer.com',
-      password: 'password123', phoneNumber: '064123456', favoriteToy: 'Slagalice'
-    }
-  ];
+private users: UserModel[] = [
+  {
+    id: 1, 
+    firstName: 'Petar', 
+    lastName: 'Petrović', 
+    email: 'petar@primer.com',
+    password: 'password123', 
+    phoneNumber: '064123456', 
+    address: 'Ulica Igračaka 123, 11500 Obrenovac', 
+    favoriteToy: 'Slagalice'
+  }
+];
 
   constructor(private router: Router) {
     const storedUser = sessionStorage.getItem('activeUser');

@@ -33,6 +33,7 @@ export class Signup {
       password: ['', [Validators.required, Validators.minLength(6)]],
       repeatPassword: ['', Validators.required],
       phoneNumber: ['', Validators.required],
+      address: ['', Validators.required],
       favoriteToy: ['', Validators.required],
     });
   }

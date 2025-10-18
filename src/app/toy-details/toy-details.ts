@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router'; // ✅ 1. Uvozimo Router
 import { CurrencyPipe } from '@angular/common';
 
 import { Igracka } from '../../models/igracka.model';
@@ -21,7 +21,8 @@ export class ToyDetails implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private igrackaService: IgrackaService,
-    public utils: Utils
+    public utils: Utils,
+    private router: Router // ✅ 2. "Ubrizgavamo" Router
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -33,8 +34,11 @@ export class ToyDetails implements OnInit {
     }
   }
   
+  /**
+   * ✅ 3. AŽURIRANA METODA: Sada vrši navigaciju na stranicu za rezervaciju.
+   */
   rezervisi(igracka: Igracka): void {
-    console.log('Rezervisana igračka:', igracka.name);
-    // TODO: Implementirati logiku za rezervaciju.
+    // Koristimo router da odemo na '/rezervisi/:id'
+    this.router.navigate(['/rezervisi', igracka.toyId]);
   }
 }
