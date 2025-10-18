@@ -14,7 +14,7 @@ import { UserService } from '../../../services/user.service'; // Uvozimo UserSer
 export class TopBarComponent {
   constructor(
     public igrackaService: IgrackaService,
-    public userService: UserService, // "Ubrizgavamo" UserService
+    public userService: UserService,
     private router: Router
   ) {}
 

@@ -1,23 +1,42 @@
-<div class="card login">
-    <div class="card-header">
-        <h2>Prijavite se</h2>
+<div class="login-container">
+  <div class="card login-card shadow-sm">
+    <div class="card-header text-center">
+      <h2 class="mb-0">Prijava</h2>
     </div>
-    <div class="card-body">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-                <label for="email" class="form-label">Email adresa:</label>
-                <input type="email" class="form-control" id="email" formControlName="email">
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Lozinka:</label>
-                <input type="password" class="form-control" id="password" formControlName="password">
-            </div>
-            <div>
-                <button type="submit" class="btn btn-primary">
-                    Prijavite se
-                </button>
-                <a routerLink="/signup" class="btn btn-link">Nemam nalog</a>
-            </div>
-        </form>
+    <div class="card-body p-4">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <!-- Polje za Email sa ikonicom -->
+        <div class="input-group mb-3">
+          <span class="input-group-text">
+            <i class="fa-solid fa-at fa-fw"></i>
+          </span>
+          <div class="form-floating">
+            <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email adresa">
+            <label for="email">Email adresa</label>
+          </div>
+        </div>
+
+        <!-- Polje za Lozinku sa ikonicom -->
+        <div class="input-group mb-4">
+          <span class="input-group-text">
+            <i class="fa-solid fa-lock fa-fw"></i>
+          </span>
+          <div class="form-floating">
+            <input type="password" class="form-control" id="password" formControlName="password" placeholder="Lozinka">
+            <label for="password">Lozinka</label>
+          </div>
+        </div>
+        
+        <!-- Dugmad -->
+        <div class="d-flex justify-content-between align-items-center">
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+            Prijavite se
+          </button>
+          <a routerLink="/signup" class="btn btn-link">Nemam nalog</a>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
+

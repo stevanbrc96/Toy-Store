@@ -49,4 +49,44 @@
     font-weight: bold;
     border-bottom: 2px solid #fff;
   }
+
+  /* Shared: centriranje i širina wrappera + inputa */
+.styled-search-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  .styled-search-input {
+    width: 100%;
+    max-width: 400px; // plafon za desktop
+  }
+}
+
+/* Mobilni / tablet header samo za <992px */
+.mobile-top {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1030; // ispred sadržaja, uskladjeno sa bootstrap nav-om
+
+  .logo-mobile {
+    height: 36px;
+    width: auto;
+  }
+
+  .styled-search-wrapper {
+    // na telefonima input ide preko cele širine
+    .styled-search-input {
+      max-width: 100%;
+    }
+  }
+}
+
+/* Malo udobnije margine za manje ekrane */
+@media (max-width: 991.98px) {
+  .styled-search-wrapper {
+    padding: 0 10px;
+  }
+}
+
 }
