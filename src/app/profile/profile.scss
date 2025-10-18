@@ -1,0 +1,44 @@
+.pForm{
+    max-width: 500px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px; 
+}
+.card-header {
+    /* Razdvojite zaglavlje od tela kartice */
+    border-bottom: 2px solid #007bff; /* Plava linija ispod naslova */
+}
+.card-body .row {
+    margin-bottom: 10px;
+    padding: 5px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+/* Stil za svaki red podataka */
+.profile-row {
+    display: flex; 
+    align-items: center; 
+    padding: 16px 20px; 
+    border-bottom: 1px solid #e9ecef; 
+}
+
+/* Stil za etikete (Ime:, Prezime:, itd.) */
+.profile-label {
+    min-width: 170px;
+    width: 170px;
+    font-weight: 600; 
+    color: #495057; 
+    font-size: 1.05rem; 
+    padding-right: 30px; 
+}
+
+/* Stil za vrednosti */
+.profile-value {
+    flex-grow: 1; 
+    text-align: right; 
+    color: #212529; 
+    font-size: 1.05rem;
+}
+

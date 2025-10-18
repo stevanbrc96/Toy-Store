@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TopBarComponent } from './layout/top-bar/top-bar';
 import { BottomNavComponent } from './layout/bottom-nav/bottom-nav';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,10 @@ import { BottomNavComponent } from './layout/bottom-nav/bottom-nav';
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
-export class AppComponent {}
+export class AppComponent {
+  protected hasAutenticated: Function
+
+  constructor() {
+    this.hasAutenticated = UserService.getActiveUser
+  }
+}
