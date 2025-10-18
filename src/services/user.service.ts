@@ -1,44 +1,45 @@
-import { UserModel } from "../models/user.model";
+import { Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { UserModel } from '../models/user.model';
 
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
-    static findUserByEmail(email: string) {
-        if (!localStorage.getItem('users')) {
-            localStorage.setItem('users', JSON.stringify([
-                {
-                    firstName: 'John',
-                    lastName: 'Doe',
-                    phoneNumber: '381123123',
-                    email: 'example@mail.com',
-                    password: 'pass123',
-                    favoriteToy: 'Plišane igračke',
-                    data: []
-                }
-            ]));
-        }
+  public currentUser = signal<UserModel | null>(null);
 
-        const users: UserModel[] = JSON.parse(localStorage.getItem('users')!);
-        const currentUser = users.find(user => user.email === email);
-
-        if(!currentUser) {
-            throw new Error('User not found');
-        }
-        return currentUser;
+  private users: UserModel[] = [
+    {
+      id: 1, firstName: 'Petar', lastName: 'Petrović', email: 'example@mail.com',
+      password: 'pass123', phoneNumber: '064123456', favoriteToy: 'Slagalice'
     }
+  ];
 
-    static login(email: string, password: string){
-        const user = this.findUserByEmail(email);
-        if(user?.password !== password){
-            throw new Error('Invalid password');
-        }
-        localStorage.setItem('active', user.email);
+  constructor(private router: Router) {
+    const storedUser = sessionStorage.getItem('activeUser');
+    if (storedUser) {
+      this.currentUser.set(JSON.parse(storedUser));
     }
+  }
 
-    static getActiveUser(){
-        const active = localStorage.getItem('active');
-        if(!active){
-            throw new Error('No active user');
-        }
-        return this.findUserByEmail(active);
+  
+  login(email: string, password: string): void {
+    const user = this.users.find(u => u.email === email && u.password === password);
+    
+    if (user) {
+      const userToStore = { ...user };
+      delete userToStore.password; 
+      this.currentUser.set(userToStore);
+      sessionStorage.setItem('activeUser', JSON.stringify(userToStore));
+      this.router.navigateByUrl('/'); 
+    } else {
+      throw new Error('Pogrešan email ili lozinka.');
     }
+  }
 
+  logout(): void {
+    this.currentUser.set(null);
+    sessionStorage.removeItem('activeUser');
+    this.router.navigateByUrl('/prijava');
+  }
 }

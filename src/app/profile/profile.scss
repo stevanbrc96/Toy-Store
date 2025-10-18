@@ -7,8 +7,7 @@
     border-radius: 10px; 
 }
 .card-header {
-    /* Razdvojite zaglavlje od tela kartice */
-    border-bottom: 2px solid #007bff; /* Plava linija ispod naslova */
+    border-bottom: 2px solid #007bff; 
 }
 .card-body .row {
     margin-bottom: 10px;
@@ -24,7 +23,6 @@
     border-bottom: 1px solid #e9ecef; 
 }
 
-/* Stil za etikete (Ime:, Prezime:, itd.) */
 .profile-label {
     min-width: 170px;
     width: 170px;
@@ -34,7 +32,6 @@
     padding-right: 30px; 
 }
 
-/* Stil za vrednosti */
 .profile-value {
     flex-grow: 1; 
     text-align: right; 

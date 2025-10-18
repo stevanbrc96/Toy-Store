@@ -11,8 +11,6 @@ import { StarRating } from '../star-rating/star-rating';
   standalone: true,
   imports: [
     CurrencyPipe,
-    NgFor,
-    RouterLink,
     FormsModule,
     StarRating
   ],

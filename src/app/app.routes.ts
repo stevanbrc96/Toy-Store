@@ -1,22 +1,24 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home';
 import { ToyDetails } from './toy-details/toy-details';
-// 1. Uvezite novu komponentu
-import { Reservation } from './reservation/reservation'; 
-//komponente za login i signup
+import { Reservation } from './reservation/reservation';
 import { Login } from './login/login';
-import { Signup } from './signup/signup';
-//komponenta za profil
+//import { Registration } from './registration/registration'; // Ostalo za koleginicu
 import { Profile } from './profile/profile';
+import { Signup } from './signup/signup';
+// import { About } from './about/about';
+// import { Cart } from './cart/cart'; 
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'igracka/:toyId', component: ToyDetails },
-  // 2. Dodajte novu rutu za rezervaciju
   { path: 'rezervisi/:toyId', component: Reservation },
-  //rute za login i signup
-  { path: 'login', component: Login },
-  { path: 'signup', component: Signup },
-  //ruta za profil
-  { path: 'profile', component: Profile }
+  
+  { path: 'prijava', component: Login },
+  { path: 'registracija', component: Signup },
+  { path: 'profil', component: Profile },
+  // { path: 'about', component: About },
+  // { path: 'korpa', component: Cart },
+
+  { path: '**', redirectTo: '' }
 ];

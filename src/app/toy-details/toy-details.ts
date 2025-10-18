@@ -5,12 +5,12 @@ import { CurrencyPipe } from '@angular/common';
 import { Igracka } from '../../models/igracka.model';
 import { IgrackaService } from '../../services/igracka.service';
 import { Utils } from '../utils';
-import { StarRating } from '../star-rating/star-rating'; 
+import { StarRating } from '../star-rating/star-rating';
 
 @Component({
   selector: 'app-toy-details',
   standalone: true,
-  imports: [CurrencyPipe, RouterLink, StarRating], 
+  imports: [CurrencyPipe, RouterLink, StarRating],
   templateUrl: './toy-details.html',
   styleUrls: ['./toy-details.scss']
 })
@@ -35,5 +35,6 @@ export class ToyDetails implements OnInit {
   
   rezervisi(igracka: Igracka): void {
     console.log('Rezervisana igračka:', igracka.name);
+    // TODO: Implementirati logiku za rezervaciju.
   }
 }

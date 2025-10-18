@@ -1,35 +1,40 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { RouterLink } from '@angular/router';
 import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
-  styleUrl: './login.scss'
+  styleUrls: ['./login.scss']
 })
 export class Login {
   protected form: FormGroup
 
-  constructor(private fb: FormBuilder, protected router: Router) {
+  // "Ubrizgavamo" servis
+  constructor(
+    private fb: FormBuilder, 
+    private userService: UserService
+  ) {
     this.form = this.fb.group({
-      email: ['',[Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
-    })
+    });
   }
 
-  onSubmit(){
-    if(!this.form.valid){
-      alert('Formular nije validan');
+  onSubmit(): void {
+    if (!this.form.valid) {
+      alert('Molimo Vas, popunite sva polja ispravno.');
       return;
     }
 
     try {
-      UserService.login(this.form.value.email, this.form.value.password);
-      this.router.navigateByUrl('/profile');
-    } catch (e) {
-      alert('Check your credentials and try again.');
+      // Pozivamo metodu na instanci servisa
+      this.userService.login(this.form.value.email, this.form.value.password);
+    } catch (e: any) {
+      alert(e.message);
     }
   }
 }

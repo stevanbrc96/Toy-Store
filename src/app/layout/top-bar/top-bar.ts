@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IgrackaService } from '../../../services/igracka.service';
+import { UserService } from '../../../services/user.service'; // Uvozimo UserService
 
 @Component({
   selector: 'app-top-bar',
@@ -13,6 +14,7 @@ import { IgrackaService } from '../../../services/igracka.service';
 export class TopBarComponent {
   constructor(
     public igrackaService: IgrackaService,
+    public userService: UserService, // "Ubrizgavamo" UserService
     private router: Router
   ) {}
 
@@ -20,5 +22,9 @@ export class TopBarComponent {
     if (this.router.url !== '/') {
       this.router.navigate(['/']);
     }
+  }
+
+  logout(): void {
+    this.userService.logout();
   }
 }

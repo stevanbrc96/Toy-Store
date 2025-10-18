@@ -5,20 +5,14 @@
   </header>
 
   @if (igrackaService.filtriraneIgracke().length > 0) {
-
   <div class="row">
     <aside class="col-lg-3 mb-4 mb-lg-0">
-      <div class="card shadow-sm position-sticky" style="top: 80px">
+      <div class="card shadow-sm position-sticky" style="top: 80px;">
         <div class="card-header bg-light"><h5 class="mb-0">Filteri</h5></div>
         <div class="card-body">
           <div class="mb-3">
             <label for="ageGroup" class="form-label fw-bold">Uzrast</label>
-            <select
-              id="ageGroup"
-              class="form-select"
-              [ngModel]="igrackaService.selectedAgeGroup()"
-              (ngModelChange)="igrackaService.selectedAgeGroup.set(+$event)"
-            >
+            <select id="ageGroup" class="form-select" [ngModel]="igrackaService.selectedAgeGroup()" (ngModelChange)="igrackaService.selectedAgeGroup.set(+$event)">
               <option [value]="0">Svi uzrasti</option>
               @for (uzrast of igrackaService.uzrasti(); track uzrast.ageGroupId) {
               <option [value]="uzrast.ageGroupId">{{ uzrast.name }}</option>
@@ -27,12 +21,7 @@
           </div>
           <div class="mb-3">
             <label for="toyType" class="form-label fw-bold">Tip igračke</label>
-            <select
-              id="toyType"
-              class="form-select"
-              [ngModel]="igrackaService.selectedType()"
-              (ngModelChange)="igrackaService.selectedType.set(+$event)"
-            >
+            <select id="toyType" class="form-select" [ngModel]="igrackaService.selectedType()" (ngModelChange)="igrackaService.selectedType.set(+$event)">
               <option [value]="0">Svi tipovi</option>
               @for (tip of igrackaService.tipovi(); track tip.typeId) {
               <option [value]="tip.typeId">{{ tip.name }}</option>
@@ -41,12 +30,7 @@
           </div>
           <div>
             <label for="targetGroup" class="form-label fw-bold">Ciljna grupa</label>
-            <select
-              id="targetGroup"
-              class="form-select"
-              [ngModel]="igrackaService.selectedTargetGroup()"
-              (ngModelChange)="igrackaService.selectedTargetGroup.set($event)"
-            >
+            <select id="targetGroup" class="form-select" [ngModel]="igrackaService.selectedTargetGroup()" (ngModelChange)="igrackaService.selectedTargetGroup.set($event)">
               <option value="svi">Svi</option>
               <option value="dečak">Dečaci</option>
               <option value="devojčica">Devojčice</option>
@@ -61,38 +45,20 @@
         <div class="col">
           <div class="card-clickable" (click)="goToDetails(igracka.toyId)">
             <div class="card h-100 shadow-sm">
-              <img
-                [src]="utils.getImageUrl(igracka.imageUrl)"
-                class="card-img-top"
-                [alt]="igracka.name"
-                style="height: 250px; object-fit: cover"
-              />
+              <img [src]="utils.getImageUrl(igracka.imageUrl)" class="card-img-top" [alt]="igracka.name" style="height: 250px; object-fit: cover" />
               <div class="card-body d-flex flex-column">
                 <h5 class="card-title">{{ igracka.name }}</h5>
+                <div class="mb-2">
+                  <app-star-rating [rating]="igracka.rating || 0"></app-star-rating>
+                </div>
                 <p class="card-text text-muted small">{{ igracka.description }}</p>
                 <ul class="list-group list-group-flush mt-3">
-                  <li class="list-group-item">
-                    <i class="fas fa-puzzle-piece text-primary me-2"></i><strong>Tip:</strong>
-                    {{ igracka.type.name }}
-                  </li>
-                  <li class="list-group-item">
-                    <i class="fas fa-child text-primary me-2"></i><strong>Uzrast:</strong>
-                    {{ igracka.ageGroup.name }}
-                  </li>
-                  <li class="list-group-item">
-                    <i class="fas fa-tag text-primary me-2"></i><strong>Cena:</strong>
-                    {{ igracka.price | currency : 'RSD ' }}
-                  </li>
+                  <li class="list-group-item"><i class="fas fa-puzzle-piece text-primary me-2"></i><strong>Tip:</strong> {{ igracka.type.name }}</li>
+                  <li class="list-group-item"><i class="fas fa-child text-primary me-2"></i><strong>Uzrast:</strong> {{ igracka.ageGroup.name }}</li>
+                  <li class="list-group-item"><i class="fas fa-tag text-primary me-2"></i><strong>Cena:</strong> {{ igracka.price | currency : 'RSD ' }}</li>
                 </ul>
                 <div class="mt-auto pt-3">
-                  <button
-                    type="button"
-                    class="btn btn-primary w-100"
-                    (click)="goToReservation($event, igracka.toyId)"
-                    title="Rezerviši igračku"
-                  >
-                    Rezerviši
-                  </button>
+                  <button type="button" class="btn btn-primary w-100" (click)="goToReservation($event, igracka.toyId)" title="Rezerviši igračku"> Rezerviši </button>
                 </div>
               </div>
             </div>
@@ -103,7 +69,6 @@
     </main>
   </div>
   } @else {
-
   <div class="row">
     <div class="col-12 text-center py-5">
       <div class="py-5">

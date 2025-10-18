@@ -1,63 +1,34 @@
-<div class="card pForm">
-    <div class="card-header">
+<div class="card pForm mx-auto mt-5" style="max-width: 600px;">
+  @if(currentUser()){
+    <div class="card-header d-flex justify-content-between align-items-center">
         <h2>Profil korisnika</h2>
+        <button class="btn btn-sm btn-outline-danger" (click)="logout()">Odjavi se</button>
     </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col-12 col-md-4">
-                <table class="table">
-                    <tbody>
-                        <tr class="profile-row">
-                            <th class="profile-label">Ime:</th>
-                            <td class="profile-value">{{currentUser()?.firstName}}</td>
-                        </tr>
-                        <tr class="profile-row">
-                            <th class="profile-label">Prezime:</th>
-                            <td class="profile-value">{{currentUser()?.lastName}}</td>
-                        </tr>
-                        <tr class="profile-row">
-                            <th class="profile-label">Broj telefona:</th>
-                            <td class="profile-value">{{currentUser()?.phoneNumber}}</td>
-                        </tr>
-                        <tr class="profile-row">
-                            <th class="profile-label">Email adresa:</th>
-                            <td class="profile-value">{{currentUser()?.email}}</td>
-                        </tr>
-                        <tr class="profile-row">
-                            <th class="profile-label">Omiljena igracka:</th>
-                            <td class="profile-value">{{currentUser()?.favoriteToy}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!--<div class="col-12 col-md-4">
-                <table class="table table-hover">
-                    <tbody>
-                        <tr>
-                            <th>Ime:</th>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <th>Prezime:</th>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <th>Broj telefona:</th>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <th>Email adresa:</th>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <th>Omiljena igracka:</th>
-                            <td>1</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>-->
+      <table class="table table-borderless profile-table">
+          <tbody>
+              <tr>
+                  <th>Ime:</th>
+                  <td>{{currentUser()?.firstName}}</td>
+              </tr>
+              <tr>
+                  <th>Prezime:</th>
+                  <td>{{currentUser()?.lastName}}</td>
+              </tr>
+              <tr>
+                  <th>Broj telefona:</th>
+                  <td>{{currentUser()?.phoneNumber}}</td>
+              </tr>
+              <tr>
+                  <th>Email adresa:</th>
+                  <td>{{currentUser()?.email}}</td>
+              </tr>
+              <tr>
+                  <th>Omiljena igračka:</th>
+                  <td>{{currentUser()?.favoriteToy}}</td>
+              </tr>
+          </tbody>
+      </table>
     </div>
-    <div class="card-footer">
-        <button type="button" class="btn btn-primary">Sačuvaj izmene</button>
-    </div>
+  }
 </div>
