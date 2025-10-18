@@ -14,7 +14,7 @@ export const routes: Routes = [
   { path: 'igracka/:toyId', component: ToyDetails },
   { path: 'rezervisi/:toyId', component: Reservation },
   
-  { path: 'prijava', component: Login },
+  { path: 'login', component: Login },
   { path: 'registracija', component: Signup },
   { path: 'profil', component: Profile },
   // { path: 'about', component: About },

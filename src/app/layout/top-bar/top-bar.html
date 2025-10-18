@@ -60,11 +60,10 @@
   </div>
 </header>
 
+      <!-- ======== PRIJAVA DESNO ======== -->
 
-      <!-- Desna Kolona: Login/Profil -->
       <div class="col-4 d-flex justify-content-end">
         <ul class="navbar-nav">
-          <!-- ✅ KORISTIMO @if/@else BLOK ZA DINAMIČKI PRIKAZ -->
           @if(userService.currentUser()) {
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -79,7 +78,7 @@
           </li>
           } @else {
           <li class="nav-item">
-            <a class="nav-link" routerLink="/prijava">Login</a>
+            <a class="nav-link" routerLink="/login">Login</a>
           </li>
           }
         </ul>
@@ -89,7 +88,7 @@
 </nav>
 
 <!-- =================================================================== -->
-<!-- Meni za MOBILNE i TABLETE (ostaje isti) -->
+<!-- Meni za MOBILNE i TABLETE -->
 <!-- =================================================================== -->
 <nav class="navbar navbar-dark bg-primary fixed-top shadow-sm d-lg-none">
   <div class="container">
@@ -112,7 +111,6 @@
         </div>
       </div>
       <div class="col-3">
-        <!-- Prazan prostor za balans -->
       </div>
     </div>
   </div>

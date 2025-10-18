@@ -13,7 +13,6 @@ import { UserService } from '../../services/user.service';
 export class Login {
   protected form: FormGroup
 
-  // "Ubrizgavamo" servis
   constructor(
     private fb: FormBuilder, 
     private userService: UserService
@@ -31,7 +30,6 @@ export class Login {
     }
 
     try {
-      // Pozivamo metodu na instanci servisa
       this.userService.login(this.form.value.email, this.form.value.password);
     } catch (e: any) {
       alert(e.message);

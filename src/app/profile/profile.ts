@@ -18,7 +18,7 @@ export class Profile {
     this.currentUser = this.userService.currentUser;
 
     if (!this.currentUser()) {
-      this.router.navigateByUrl('/prijava');
+      this.router.navigateByUrl('/login');
     }
   }
 

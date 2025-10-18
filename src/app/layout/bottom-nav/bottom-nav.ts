@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { UserService } from '../../../services/user.service'; // Uvozimo UserService
+import { UserService } from '../../../services/user.service'; 
 
 @Component({
   selector: 'app-bottom-nav',

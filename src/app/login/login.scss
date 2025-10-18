@@ -1,36 +1,31 @@
-// Kontejner koji centrira login formu vertikalno i horizontalno
 .login-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  // 100% visine ekrana minus visina gornjeg i donjeg menija (na mobilnom)
   min-height: calc(100vh - 140px); 
 }
 
-// Stil za karticu, inspirisan vašom .pForm klasom sa profila
 .login-card {
-  // ✅ IZMENA: Dodata je širina od 90% da bi se stvorile bočne margine
   width: 90%; 
-  max-width: 500px; // Širina usklađena sa profil stranicom
+  max-width: 500px; 
   border: none;
-  border-radius: 10px; // Kao na profilu
+  border-radius: 10px; 
 
   .card-header {
     background-color: transparent;
-    border-bottom: 2px solid var(--bs-primary); // Plava linija kao na profilu
+    border-bottom: 2px solid var(--bs-primary); 
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
   }
 }
 
-// Stil za grupu sa ikonicom i input poljem
 .input-group {
   .input-group-text {
-    background-color: #f8f9fa; // Svetlo siva pozadina za ikonicu
+    background-color: #f8f9fa; 
     border-right: none;
   }
 
   .form-control {
-    border-left: none; // Uklanja duplu ivicu između ikonice i polja
+    border-left: none; 
   }
 }

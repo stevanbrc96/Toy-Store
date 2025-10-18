@@ -1,9 +1,14 @@
-.signup{
-    width: 500px;
-    margin: auto;
-    margin-top: 100px;
-}
+.signup-form {
+  max-width: 600px;
+  margin: 50px auto;
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 
-.buttonSection{
-    margin-top: 20px;
+  .card-header {
+    background-color: var(--bs-primary);
+    color: white;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+  }
 }
