@@ -8,6 +8,7 @@ import { UserModel } from '../models/user.model';
 export class UserService {
   public currentUser = signal<UserModel | null>(null);
 
+  // Simulirana "baza podataka" korisnika
   private users: UserModel[] = [
     {
       id: 1, firstName: 'Petar', lastName: 'Petrović', email: 'petar@primer.com',
@@ -35,6 +36,27 @@ export class UserService {
     } else {
       throw new Error('Pogrešan email ili lozinka.');
     }
+  }
+
+  /**
+   * ✅ DODATA NOVA METODA: Registruje novog korisnika.
+   */
+  signup(payload: Omit<UserModel, 'id'>): void {
+    // Proveravamo da li korisnik sa datim email-om već postoji
+    const userExists = this.users.some(u => u.email === payload.email);
+    if (userExists) {
+      throw new Error('Korisnik sa ovom email adresom već postoji.');
+    }
+
+    // Dodajemo novog korisnika u našu "bazu"
+    const newUser: UserModel = {
+      id: this.users.length + 1, // Jednostavan način za generisanje ID-ja
+      ...payload
+    };
+    this.users.push(newUser);
+    
+    // U pravoj aplikaciji, ovi podaci bi se slali na backend.
+    console.log('Svi korisnici nakon registracije:', this.users);
   }
 
   logout(): void {
