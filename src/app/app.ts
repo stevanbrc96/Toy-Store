@@ -13,12 +13,9 @@ import { UserModel } from '../models/user.model';
   styleUrls: ['./app.scss']
 })
 export class AppComponent {
-  // ✅ 1. Deklarišemo properti bez inicijalne vrednosti.
   protected currentUser: WritableSignal<UserModel | null>;
 
-  // "Ubrizgavamo" UserService u konstruktor
   constructor(private userService: UserService) {
-    // ✅ 2. Dodeljujemo vrednost NAKON što je 'userService' postao dostupan.
     this.currentUser = this.userService.currentUser;
   }
 }
