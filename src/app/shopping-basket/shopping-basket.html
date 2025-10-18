@@ -1,0 +1,102 @@
+<div class="container my-5">
+    <header class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5">Moja Korpa</h1>
+        <a routerLink="/" class="btn btn-outline-secondary">
+            <i class="fa-solid fa-arrow-left me-2"></i> Nastavi kupovinu
+        </a>
+    </header>
+
+    @if (korpaService.stavkeKorpe().length > 0) {
+    <div class="row">
+        <!-- Leva kolona: Stavke u korpi -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">Igračka</th>
+                                <th scope="col">Cena</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-end">Akcije</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (item of korpaService.stavkeKorpe(); track item.toyId) {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img [src]="'/logo.png'" [alt]="item.name" class="me-3" style="width: 50px;">
+                                        <div>
+                                            <h6 class="mb-0">{{ item.name }}</h6>
+                                            <small class="text-muted">{{ item.type.name }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ item.price | currency:'RSD ' }}</td>
+                                <td>
+                                    <span class="badge" [class.bg-warning]="item.status === 'rezervisano'"
+                                        [class.bg-success]="item.status === 'pristiglo'"
+                                        [class.bg-danger]="item.status === 'otkazano'">
+                                        {{ item.status }}
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <!-- Prikazujemo dugmad u zavisnosti od statusa -->
+                                    @if (item.status === 'rezervisano') {
+                                    <button class="btn btn-sm btn-outline-info"
+                                        (click)="korpaService.izmeniStavkuUKorpi(item.toyId, {})"
+                                        title="Izmeni podatke">
+                                        <i class="fa-solid fa-pencil"></i>
+                                    </button>
+                                    }
+                                    @if (item.status === 'pristiglo') {
+                                    <button class="btn btn-sm btn-outline-primary me-2" title="Oceni igračku">
+                                        <i class="fa-solid fa-star"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger"
+                                        (click)="korpaService.ukloniIzKorpe(item.toyId)" title="Obriši iz korpe">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                    }
+                                    <!-- Za testiranje - privremena dugmad za promenu statusa -->
+                                    <div class="btn-group btn-group-sm mt-2">
+                                        <button class="btn btn-outline-secondary"
+                                            (click)="postaviStatusPristiglo(item.toyId)">Pristiglo</button>
+                                        <button class="btn btn-outline-secondary"
+                                            (click)="postaviStatusOtkazano(item.toyId)">Otkazano</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Desna kolona: Ukupna cena -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm position-sticky" style="top: 90px;">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Pregled Rezervacije</h5>
+                    <div class="d-flex justify-content-between">
+                        <span>Ukupno za plaćanje:</span>
+                        <span class="fw-bold fs-5">{{ korpaService.ukupnaCena() | currency:'RSD ' }}</span>
+                    </div>
+                    <hr>
+                    <div class="d-grid">
+                        <button class="btn btn-primary btn-lg">Završi Rezervaciju</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    } @else {
+    <!-- Prikaz ako je korpa prazna -->
+    <div class="text-center py-5">
+        <i class="fa-solid fa-cart-shopping fa-4x text-muted mb-4"></i>
+        <h3 class="mb-3">Vaša korpa je prazna</h3>
+        <p class="text-muted">Pregledajte naš katalog i rezervišite nešto lepo!</p>
+    </div>
+    }
+</div>
