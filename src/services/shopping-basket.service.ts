@@ -1,103 +1,106 @@
-import { Injectable, signal, computed, effect, inject } from '@angular/core';
-import { KorpaStavka, StatusRezervacije } from '../models/shopping-basket.model';
+import { Injectable, signal, computed } from '@angular/core';
 import { Igracka } from '../models/igracka.model';
-import { UserService } from './user.service';
-import { IgrackaService } from './igracka.service';
-import { UserModel } from '../models/user.model';
+
+export interface KorpaStavka {
+  igracka: Igracka;
+  kolicina: number;
+  status: 'rezervisano' | 'pristiglo' | 'otkazano';
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class KorpaService {
-  public stavkeKorpe = signal<KorpaStavka[]>([]);
+  private korpaState = signal<KorpaStavka[]>([]);
 
-  private userService = inject(UserService);
-  private igrackaService = inject(IgrackaService);
+  public korpa = this.korpaState.asReadonly();
 
-  public ukupnaCena = computed(() => {
-    return this.stavkeKorpe()
-      .filter(item => item.status !== 'otkazano') 
-      .reduce((total, item) => total + item.price, 0);
-  });
+  public ukupanBrojStavki = computed(() =>
+    this.korpaState().reduce((sum, s) => sum + s.kolicina, 0)
+  );
 
-  constructor() {
-    effect(() => {
-      const korisnik = this.userService.currentUser();
-      this.ucitajKorpuZaKorisnika(korisnik);
-    });
-  }
+  public ukupnaCena = computed(() =>
+    this.korpaState().reduce((sum, s) => sum + (s.igracka.price * s.kolicina), 0)
+  );
 
-  
-  private async ucitajKorpuZaKorisnika(korisnik: UserModel | null): Promise<void> {
-    if (korisnik && korisnik.email === 'petar@primer.com') {
-      console.log('Prijavljen je testni korisnik. Preuzimam igračke sa API-ja za korpu...');
-      const testnaKorpa = await this.kreirajTestnuKorpuSaApiPodacima();
-      this.stavkeKorpe.set(testnaKorpa);
-    } else {
-      console.log('Korisnik se promenio ili odjavio. Korpa je ispražnjena.');
-      this.stavkeKorpe.set([]);
-    }
-  }
+  constructor() {}
 
-  
-  private async kreirajTestnuKorpuSaApiPodacima(): Promise<KorpaStavka[]> {
-    const idIgracaka = [1, 5, 8];
+  // 🔹 Dodavanje nove igračke u korpu
+  dodajIgracku(igracka: Igracka, kolicina: number = 1): void {
+    this.korpaState.update(stanje => {
+      const postoji = stanje.find(s => s.igracka.toyId === igracka.toyId);
 
-    try {
-      const igrackePromises = idIgracaka.map(id => this.igrackaService.getIgrackaById(id));
-      const preuzeteIgracke = await Promise.all(igrackePromises);
+      if (postoji) {
+        postoji.kolicina += kolicina;
+        return [...stanje];
+      } else {
+        const nova: KorpaStavka = {
+          igracka,
+          kolicina,
+          status: 'rezervisano'
+        };
 
-      const validneIgracke = preuzeteIgracke.filter((igracka): igracka is Igracka => igracka !== null);
+        // Simulacija da igračka "stiže" posle 10 sekundi
+        setTimeout(() => {
+          this.promeniStatus(igracka.toyId, 'pristiglo');
+        }, 10000);
 
-      const korpa: KorpaStavka[] = [];
-      if (validneIgracke[0]) korpa.push({ ...validneIgracke[0], status: 'pristiglo' });
-      if (validneIgracke[1]) korpa.push({ ...validneIgracke[1], status: 'pristiglo' });
-      if (validneIgracke[2]) korpa.push({ ...validneIgracke[2], status: 'rezervisano' });
-      
-      return korpa;
-
-    } catch (error) {
-      console.error("Greška pri kreiranju testne korpe sa API podacima:", error);
-      return [];
-    }
-  }
-
-  
-  dodajUKorpu(igracka: Igracka): void {
-    this.stavkeKorpe.update(trenutneStavke => {
-      if (trenutneStavke.find(item => item.toyId === igracka.toyId)) {
-        alert('Ova igračka se već nalazi u vašoj korpi.');
-        return trenutneStavke; 
+        return [...stanje, nova];
       }
-      
-      const novaStavka: KorpaStavka = { ...igracka, status: 'rezervisano' };
-      return [...trenutneStavke, novaStavka];
     });
   }
- 
-  
-  ukloniIzKorpe(toyId: number): void {
-    const stavkaZaBrisanje = this.stavkeKorpe().find(item => item.toyId === toyId);
 
-    if (stavkaZaBrisanje && stavkaZaBrisanje.status === 'pristiglo') {
-      this.stavkeKorpe.update(stavke => stavke.filter(item => item.toyId !== toyId));
-      alert(`Igračka "${stavkaZaBrisanje.name}" je uspešno obrisana iz korpe.`);
-    } else {
-      alert(`Brisanje nije dozvoljeno. Status rezervacije je '${stavkaZaBrisanje?.status}'.`);
-    }
+  // 🔹 Povećanje količine
+  povecajKolicinu(igrackaId: number): void {
+    this.korpaState.update(stanje => {
+      return stanje.map(s => {
+        if (s.igracka.toyId === igrackaId && s.status === 'rezervisano') {
+          return { ...s, kolicina: s.kolicina + 1 };
+        }
+        return s;
+      });
+    });
   }
-  
-  
-  izmeniStavkuUKorpi(toyId: number, podaci: Partial<KorpaStavka>): void {
-    alert("Funkcionalnost izmene podataka još uvek nije implementirana.");
+
+  // 🔹 Smanjenje količine
+  smanjiKolicinu(igrackaId: number): void {
+    this.korpaState.update(stanje => {
+      return stanje
+        .map(s => {
+          if (s.igracka.toyId === igrackaId && s.status === 'rezervisano') {
+            const novaKolicina = s.kolicina - 1;
+            if (novaKolicina <= 0) return null;
+            return { ...s, kolicina: novaKolicina };
+          }
+          return s;
+        })
+        .filter((s): s is KorpaStavka => s !== null);
+    });
   }
-  
-  
-  promeniStatusStavke(toyId: number, noviStatus: StatusRezervacije): void {
-    this.stavkeKorpe.update(stavke => 
-      stavke.map(item => 
-        item.toyId === toyId ? { ...item, status: noviStatus } : item
+
+  // 🔹 Uklanjanje stavke (ako nije otkazano)
+  ukloniStavku(igrackaId: number): void {
+    this.korpaState.update(stanje =>
+      stanje.filter(s => s.igracka.toyId !== igrackaId && s.status !== 'otkazano')
+    );
+  }
+
+  // 🔹 Isprazni korpu
+  isprazniKorpu(): void {
+    this.korpaState.set([]);
+  }
+
+  // 🔹 Promena statusa (interno korišćenje)
+  private promeniStatus(igrackaId: number, noviStatus: 'rezervisano' | 'pristiglo' | 'otkazano'): void {
+    this.korpaState.update(stanje =>
+      stanje.map(s =>
+        s.igracka.toyId === igrackaId ? { ...s, status: noviStatus } : s
       )
     );
+  }
+
+  // 🔹 Ručno otkazivanje (ako bude potrebno)
+  otkaziIgracku(igrackaId: number): void {
+    this.promeniStatus(igrackaId, 'otkazano');
   }
 }

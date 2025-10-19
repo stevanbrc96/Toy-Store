@@ -1,27 +1,55 @@
-import { Component } from '@angular/core';
-import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Component, inject, effect, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { KorpaService } from '../../services/shopping-basket.service';
 import { UserService } from '../../services/user.service';
-import { StatusRezervacije } from '../../models/shopping-basket.model'; 
-import { Utils } from '../utils';
+import { RatingModal } from '../rating-modal/rating-modal';
+import { KorpaStavka } from '../../services/shopping-basket.service';
 
 @Component({
-  selector: 'app-cart',
+  selector: 'app-shopping-basket',
   standalone: true,
-  imports: [CurrencyPipe, NgFor, NgIf, RouterLink],
+  imports: [CommonModule, RouterLink, RatingModal],
   templateUrl: './shopping-basket.html',
   styleUrls: ['./shopping-basket.scss']
 })
-export class Cart {
-  constructor(
-    public korpaService: KorpaService,
-    public utils: Utils,
-    private userService: UserService,
-    private router: Router
-  ) {
-    if (!this.userService.currentUser()) {
-      this.router.navigateByUrl('/prijava');
+export class ShoppingBasket {
+  private korpaService = inject(KorpaService);
+  private userService = inject(UserService);
+
+  @ViewChild(RatingModal) ratingModal!: RatingModal;
+
+  korisnik = this.userService.currentUser();
+  stavke: KorpaStavka[] = [];
+  ukupno = 0;
+
+  constructor() {
+    effect(() => {
+      this.stavke = this.korpaService.korpa();
+      this.ukupno = this.korpaService.ukupnaCena();
+    });
+  }
+
+  povecaj(igrackaId: number): void {
+    this.korpaService.povecajKolicinu(igrackaId);
+  }
+
+  smanji(igrackaId: number): void {
+    this.korpaService.smanjiKolicinu(igrackaId);
+  }
+
+  ukloni(igrackaId: number): void {
+    this.korpaService.ukloniStavku(igrackaId);
+  }
+
+  isprazniKorpu(): void {
+    if (confirm('Da li ste sigurni da želite da ispraznite korpu?')) {
+      this.korpaService.isprazniKorpu();
     }
+  }
+
+  otvoriModalZaOcenu(toyId: number): void {
+    this.ratingModal.toyId = toyId;
+    this.ratingModal.otvori();
   }
 }

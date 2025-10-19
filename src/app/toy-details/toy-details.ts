@@ -1,44 +1,85 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router'; // ✅ 1. Uvozimo Router
-import { CurrencyPipe } from '@angular/common';
+import { Component, inject, effect } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import * as bootstrap from 'bootstrap';
+
+import { IgrackaService } from '../../services/igracka.service';
+import { KorpaService } from '../../services/shopping-basket.service';
 
 import { Igracka } from '../../models/igracka.model';
-import { IgrackaService } from '../../services/igracka.service';
-import { Utils } from '../utils';
+import { Recenzija } from '../../models/recenzija.model';
+
 import { StarRating } from '../star-rating/star-rating';
+import { RatingModal } from '../rating-modal/rating-modal';
 
 @Component({
   selector: 'app-toy-details',
   standalone: true,
-  imports: [CurrencyPipe, RouterLink, StarRating],
+  imports: [CommonModule, StarRating, RatingModal],
   templateUrl: './toy-details.html',
   styleUrls: ['./toy-details.scss']
 })
-export class ToyDetails implements OnInit {
+export class ToyDetails {
+  private route = inject(ActivatedRoute);
+  private igrackaService = inject(IgrackaService);
+  private korpaService = inject(KorpaService);
 
-  igracka = signal<Igracka | null>(null);
+  loading = true;
+  igracka: Igracka | null = null;
+  recenzije: Recenzija[] = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private igrackaService: IgrackaService,
-    public utils: Utils,
-    private router: Router // ✅ 2. "Ubrizgavamo" Router
-  ) {}
+  constructor() {
+    // 🔹 učitaj detalje igračke
+    effect(() => {
+      const id = this.route.snapshot.paramMap.get('id');
+      if (id) {
+        this.igrackaService.getIgrackaById(id).then(igr => {
+          this.igracka = igr;
+          this.loading = false;
+          if (igr) {
+            this.recenzije = [...this.igrackaService.getRecenzijeZaIgracku(igr.toyId)];
+          }
+        });
+      }
+    });
 
-  async ngOnInit(): Promise<void> {
-    const id = this.route.snapshot.paramMap.get('toyId');
+    // 🔹 automatsko osvežavanje kad se doda nova recenzija
+    effect(() => {
+      this.igrackaService.recenzijeOsvezene();
+      if (this.igracka) {
+        const toyId = this.igracka.toyId;
+        this.recenzije = [...this.igrackaService.getRecenzijeZaIgracku(toyId)];
+        const azurirana = this.igrackaService.sveIgracke().find(i => i.toyId === toyId);
+        if (azurirana) {
+          this.igracka = { ...this.igracka, rating: azurirana.rating };
+        }
+      }
+    });
+  }
 
-    if (id) {
-      const data = await this.igrackaService.getIgrackaById(id);
-      this.igracka.set(data);
+  // 🔹 dodaj igračku u korpu + prikaži toast
+  dodajUKorpu(): void {
+    if (!this.igracka) return;
+
+    this.korpaService.dodajIgracku(this.igracka);
+
+    const toastEl = document.getElementById('toastKorpa');
+    if (toastEl) {
+      const toast = new bootstrap.Toast(toastEl, { delay: 2000 });
+      toast.show();
     }
   }
-  
-  /**
-   * ✅ 3. AŽURIRANA METODA: Sada vrši navigaciju na stranicu za rezervaciju.
-   */
-  rezervisi(igracka: Igracka): void {
-    // Koristimo router da odemo na '/rezervisi/:id'
-    this.router.navigate(['/rezervisi', igracka.toyId]);
+
+  // 🔹 ručno osveži recenzije (poziva se iz rating-modal)
+  osveziRecenzije(): void {
+    if (!this.igracka) return;
+
+    const toyId = this.igracka.toyId;
+    this.recenzije = [...this.igrackaService.getRecenzijeZaIgracku(toyId)];
+
+    const azurirana = this.igrackaService.sveIgracke().find(i => i.toyId === toyId);
+    if (azurirana) {
+      this.igracka = { ...this.igracka, rating: azurirana.rating };
+    }
   }
 }

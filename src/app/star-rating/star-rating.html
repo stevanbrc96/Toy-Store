@@ -1,8 +1,7 @@
-<div class="rating-stars d-flex align-items-center">
-  <div class="stars-wrapper">
-    <span class="star" *ngFor="let i of stars">
-      <i class="fas fa-star" [class.filled]="i < rating"></i>
-    </span>
-  </div>
-  <span class="rating-text ms-2">({{ rating.toFixed(1) }})</span>
+<!-- src/app/star-rating/star-rating.html -->
+<div class="star-rating d-inline-flex align-items-center">
+  @for (star of stars; track star) {
+    <i [class]="getStarClass(star)" class="text-warning"></i>
+  }
+  <span class="ms-2 text-muted small">{{ rating.toFixed(1) }}</span>
 </div>

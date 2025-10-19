@@ -1,89 +1,108 @@
-<div class="container my-5">
-  <header class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="display-5">Moja Korpa</h1>
-    <a routerLink="/" class="btn btn-outline-secondary">
-      <i class="fa-solid fa-arrow-left me-2"></i> Nastavi kupovinu
-    </a>
-  </header>
-
-  @if (korpaService.stavkeKorpe().length > 0) {
-    <div class="row">
-      <div class="col-lg-8">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <table class="table align-middle">
-              <thead>
-                <tr>
-                  <th scope="col">Igračka</th>
-                  <th scope="col">Cena</th>
-                  <th scope="col">Status</th>
-                  <th scope="col" class="text-end">Akcije</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (item of korpaService.stavkeKorpe(); track item.toyId) {
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <img [src]="utils.getImageUrl(item.imageUrl)" [alt]="item.name" class="me-3 rounded" style="width: 60px;">
-                        <div>
-                          <h6 class="mb-0">{{ item.name }}</h6>
-                          <small class="text-muted">{{ item.type.name }}</small>
-                        </div>
-                      </div>
-                    </td>
-                    <td>{{ item.price | currency:'RSD ' }}</td>
-                    <td>
-                      <span class="badge" 
-                            [class.bg-warning]="item.status === 'rezervisano'"
-                            [class.bg-success]="item.status === 'pristiglo'"
-                            [class.bg-danger]="item.status === 'otkazano'">
-                        {{ item.status }}
-                      </span>
-                    </td>
-                    <td class="text-end">
-                      @if (item.status === 'rezervisano') {
-                        <button class="btn btn-sm btn-outline-secondary" (click)="korpaService.izmeniStavkuUKorpi(item.toyId, {})" title="Izmeni podatke">
-                          <i class="fa-solid fa-pencil"></i>
-                        </button>
-                      }
-                      @if (item.status === 'pristiglo') {
-                        <button class="btn btn-sm btn-outline-primary me-2" title="Oceni igračku">
-                          <i class="fa-solid fa-star"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" (click)="korpaService.ukloniIzKorpe(item.toyId)" title="Obriši iz korpe">
-                          <i class="fa-solid fa-trash"></i>
-                        </button>
-                      }
-                    </td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-        </div>
+<div class="container py-5">
+  @if (korisnik) {
+    <div class="card shadow-sm mx-auto p-4" style="max-width: 900px">
+      <div
+        class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top"
+      >
+        <h5 class="mb-0"><i class="fa-solid fa-cart-shopping me-2"></i> Moja korpa</h5>
+        @if (stavke.length > 0) {
+          <button class="btn btn-sm btn-light" (click)="isprazniKorpu()">
+            <i class="fa-solid fa-trash-can me-1"></i> Isprazni
+          </button>
+        }
       </div>
-      <div class="col-lg-4">
-        <div class="card shadow-sm position-sticky" style="top: 90px;">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Pregled Rezervacije</h5>
-            <div class="d-flex justify-content-between">
-              <span>Ukupno za plaćanje:</span>
-              <span class="fw-bold fs-5">{{ korpaService.ukupnaCena() | currency:'RSD ' }}</span>
-            </div>
-            <hr>
-            <div class="d-grid">
-              <button class="btn btn-primary btn-lg">Završi Rezervaciju</button>
-            </div>
+
+      <div class="card-body">
+        @if (stavke.length === 0) {
+          <div class="text-center text-muted py-5">
+            <i class="fa-solid fa-box-open fa-3x mb-3"></i>
+            <h5>Vaša korpa je prazna</h5>
+            <a routerLink="/home" class="btn btn-primary mt-3">
+              <i class="fa-solid fa-arrow-left me-2"></i> Nazad na početnu
+            </a>
           </div>
-        </div>
+        } @else {
+          <div class="list-group">
+            @for (stavka of stavke; track stavka.igracka.toyId) {
+              <div class="list-group-item d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-3">
+                  <img
+                    [src]="'https://toy.pequla.com/' + stavka.igracka.imageUrl"
+                    alt="{{ stavka.igracka.name }}"
+                    class="rounded"
+                    width="70"
+                    height="70"
+                    onerror="this.onerror=null; this.src='https://placehold.co/70x70/CCCCCC/333333?text=Nema+Slike';"
+                  />
+                  <div>
+                    <h6 class="mb-1">{{ stavka.igracka.name }}</h6>
+                    <p class="text-muted mb-0">{{ stavka.igracka.type.name }}</p>
+                    <span class="badge mt-2"
+                          [ngClass]="{
+                            'bg-warning text-dark': stavka.status === 'rezervisano',
+                            'bg-success': stavka.status === 'pristiglo',
+                            'bg-danger': stavka.status === 'otkazano'
+                          }">
+                      {{ stavka.status }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="text-end">
+                  <div class="d-flex align-items-center justify-content-end gap-2 mb-2">
+                    <button
+                      class="btn btn-sm btn-outline-secondary"
+                      (click)="smanji(stavka.igracka.toyId)"
+                      [disabled]="stavka.status !== 'rezervisano'">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+                    <span class="fw-semibold">{{ stavka.kolicina }}</span>
+                    <button
+                      class="btn btn-sm btn-outline-secondary"
+                      (click)="povecaj(stavka.igracka.toyId)"
+                      [disabled]="stavka.status !== 'rezervisano'">
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+
+                  <span class="fw-semibold">
+                    {{ stavka.igracka.price * stavka.kolicina | number : '1.2-2' }} RSD
+                  </span>
+
+                  <button
+                    *ngIf="stavka.status === 'pristiglo'"
+                    class="btn btn-sm btn-outline-primary ms-3"
+                    (click)="otvoriModalZaOcenu(stavka.igracka.toyId)">
+                    <i class="fa-solid fa-star me-1"></i> Oceni
+                  </button>
+
+                  <button
+                    class="btn btn-sm btn-outline-danger ms-2"
+                    (click)="ukloni(stavka.igracka.toyId)"
+                    [disabled]="stavka.status === 'otkazano'">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-4 border-top pt-3">
+            <h5 class="mb-0">Ukupno:</h5>
+            <h5 class="text-primary mb-0">{{ ukupno | number : '1.2-2' }} RSD</h5>
+          </div>
+        }
       </div>
     </div>
+
+    <!-- Rating modal -->
+    <app-rating-modal></app-rating-modal>
   } @else {
-    <div class="text-center py-5">
-      <i class="fa-solid fa-cart-shopping fa-4x text-muted mb-4"></i>
-      <h3 class="mb-3">Vaša korpa je prazna</h3>
-      <p class="text-muted">Pregledajte naš katalog i rezervišite nešto lepo!</p>
+    <div class="alert alert-warning text-center p-5">
+      <h4 class="mb-3">Morate biti prijavljeni da biste pristupili korpi.</h4>
+      <a routerLink="/login" class="btn btn-primary">
+        <i class="fa-solid fa-right-to-bracket me-2"></i> Prijavite se
+      </a>
     </div>
   }
 </div>

@@ -1,34 +1,29 @@
-.table-responsive {
-  @media (max-width: 767px) {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+/* src/app/shopping-basket/shopping-basket.scss */
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid #e0e0e0;
+
+  &:last-child {
+    border-bottom: none;
   }
-}
 
-.badge {
-  font-size: 0.8rem;
-  padding: 0.4em 0.6em;
-}
+  img {
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
 
-.btn-group-sm {
-  > .btn {
-    margin-right: 0.25rem;
-    &:last-child {
-      margin-right: 0;
+  button {
+    i {
+      pointer-events: none;
     }
   }
 }
 
-td img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 0.25rem;
+.card {
+  border: none;
+  border-radius: 0.75rem;
 }
 
-.card-title {
-  border-bottom: 1px solid #dee2e6;
-  padding-bottom: 0.75rem;
+.card-header {
+  border: none;
 }

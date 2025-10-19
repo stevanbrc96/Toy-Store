@@ -1,15 +1,16 @@
-.rating-stars {
-  color: #e4e5e9; 
-  font-size: 1rem;
-
-  .star {
-    i.filled {
-      color: #ffc107;
-    }
+/* src/app/star-rating/star-rating.scss */
+.star-rating {
+  i {
+    font-size: 1.1rem;
+    margin-right: 2px;
   }
 
-  .rating-text {
-    font-size: 0.9rem;
-    color: #6c757d;
+  .fa-star,
+  .fa-star-half-stroke {
+    color: #ffc107; // Bootstrap warning žuta (standard za ocene)
+  }
+
+  .fa-regular.fa-star {
+    color: #d6d6d6;
   }
 }

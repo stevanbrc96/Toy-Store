@@ -1,62 +1,61 @@
-import { Component, signal } from '@angular/core';
+// src/app/signup/signup.ts
+import { Component, inject, effect } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router'; 
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { NgFor } from '@angular/common';
+import { IgrackaService } from '../../services/igracka.service';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './signup.html',
   styleUrls: ['./signup.scss']
 })
 export class Signup {
-  protected form: FormGroup;
-  protected favoriteToys = signal<string[]>([
-    'Plišane igračke',
-    'Slagalice',
-    'Akcione figure',
-    'Lutke',
-    'Automobili'
-  ]);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private userService = inject(UserService);
+  private igrackaService = inject(IgrackaService);
 
-  constructor(
-    private fb: FormBuilder,
-    private userService: UserService,
-    private router: Router 
-  ) {
+  form: FormGroup;
+  favoriteToys: string[] = [];
+
+  constructor() {
     this.form = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', Validators.required],
       repeatPassword: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
-      address: ['', Validators.required],
-      favoriteToy: ['', Validators.required],
+      phoneNumber: [''],
+      address: [''],
+      favoriteToy: ['']
+    });
+
+    // automatski reaguje kad se signal promeni
+    effect(() => {
+      const tipovi = this.igrackaService.tipovi();
+      this.favoriteToys = Array.isArray(tipovi) ? tipovi.map(t => t.name) : [];
     });
   }
 
   onSubmit(): void {
-    if (this.form.value.password !== this.form.value.repeatPassword) {
+    if (this.form.invalid) return;
+
+    const user = this.form.value;
+    if (user.password !== user.repeatPassword) {
       alert('Lozinke se ne poklapaju.');
       return;
     }
 
-    if (!this.form.valid) {
-      alert('Molimo Vas, popunite sva polja ispravno.');
-      return;
-    }
-
-    try {
-      this.userService.signup(this.form.value);
-      alert('Uspešno ste se registrovali! Sada se možete prijaviti.');
-      
-      this.router.navigateByUrl('/prijava');
-
-    } catch (e: any) {
-      alert(e.message);
+    const success = this.userService.register(user);
+    if (success) {
+      alert('Registracija uspešna! Možete se prijaviti.');
+      this.router.navigateByUrl('/login');
+    } else {
+      alert('Korisnik sa ovom email adresom već postoji.');
     }
   }
 }

@@ -1,34 +1,68 @@
-<div class="card pForm mx-auto mt-5" style="max-width: 600px;">
-  @if(currentUser()){
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h2>Profil korisnika</h2>
-        <button class="btn btn-sm btn-outline-danger" (click)="logout()">Odjavi se</button>
+<!-- src/app/profile/profile.html -->
+<div class="container py-5">
+  @if (korisnik) {
+    <div class="card shadow-sm mx-auto p-4" style="max-width: 600px;">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top">
+        <h5 class="mb-0">
+          <i class="fa-solid fa-user me-2"></i>Moj profil
+        </h5>
+        <button type="button" class="btn btn-sm btn-light" (click)="odjava()">
+          <i class="fa-solid fa-right-from-bracket me-1"></i> Odjavi se
+        </button>
+      </div>
+
+      <div class="card-body mt-3">
+        <form [formGroup]="form" (ngSubmit)="sacuvaj()">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Ime</label>
+              <input type="text" class="form-control" formControlName="firstName">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Prezime</label>
+              <input type="text" class="form-control" formControlName="lastName">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" formControlName="email" attr.disabled="true">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Telefon</label>
+            <input type="tel" class="form-control" formControlName="phoneNumber">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Adresa</label>
+            <input type="text" class="form-control" formControlName="address">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Omiljena vrsta igračke</label>
+            <select class="form-select" formControlName="favoriteToy">
+              <option value="" disabled>Izaberite...</option>
+              @for (tip of tipovi; track tip) {
+                <option [value]="tip">{{ tip }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="d-grid mt-4">
+            <button class="btn btn-primary" type="submit">
+              <i class="fa-solid fa-floppy-disk me-2"></i> Sačuvaj izmene
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-    <div class="card-body">
-      <table class="table table-borderless profile-table">
-          <tbody>
-              <tr>
-                  <th>Ime:</th>
-                  <td>{{currentUser()?.firstName}}</td>
-              </tr>
-              <tr>
-                  <th>Prezime:</th>
-                  <td>{{currentUser()?.lastName}}</td>
-              </tr>
-              <tr>
-                  <th>Broj telefona:</th>
-                  <td>{{currentUser()?.phoneNumber}}</td>
-              </tr>
-              <tr>
-                  <th>Email adresa:</th>
-                  <td>{{currentUser()?.email}}</td>
-              </tr>
-              <tr>
-                  <th>Omiljena igračka:</th>
-                  <td>{{currentUser()?.favoriteToy}}</td>
-              </tr>
-          </tbody>
-      </table>
+  } @else {
+    <div class="alert alert-warning text-center p-5">
+      <h4 class="mb-3">Morate biti prijavljeni da biste videli profil.</h4>
+      <a routerLink="/login" class="btn btn-primary">
+        <i class="fa-solid fa-right-to-bracket me-2"></i> Prijavite se
+      </a>
     </div>
   }
 </div>

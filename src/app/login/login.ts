@@ -1,20 +1,23 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrls: ['./login.scss']
 })
 export class Login {
-  protected form: FormGroup
+  form: FormGroup;
+  errorMessage = '';
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
+    private router: Router,
     private userService: UserService
   ) {
     this.form = this.fb.group({
@@ -24,15 +27,15 @@ export class Login {
   }
 
   onSubmit(): void {
-    if (!this.form.valid) {
-      alert('Molimo Vas, popunite sva polja ispravno.');
-      return;
-    }
+    if (this.form.invalid) return;
 
-    try {
-      this.userService.login(this.form.value.email, this.form.value.password);
-    } catch (e: any) {
-      alert(e.message);
+    const { email, password } = this.form.value;
+    const success = this.userService.login(email, password);
+
+    if (success) {
+      this.router.navigateByUrl('/');
+    } else {
+      this.errorMessage = 'Pogrešan email ili lozinka.';
     }
   }
 }

@@ -1,0 +1,39 @@
+<div class="modal-backdrop fade show" *ngIf="prikazano"></div>
+
+<div class="modal fade show d-block" tabindex="-1" *ngIf="prikazano">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title"><i class="fa-solid fa-star me-2"></i>Ocenite igračku</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="zatvori()"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <div class="stars">
+            @for (i of [1, 2, 3, 4, 5]; track i) {
+              <i
+                class="fa-star fa-2x me-1"
+                [class.fa-solid]="i <= ocena"
+                [class.fa-regular]="i > ocena"
+                (click)="postaviOcenu(i)">
+              </i>
+            }
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Komentar (opciono)</label>
+          <textarea class="form-control" [(ngModel)]="komentar" rows="3" placeholder="Vaš utisak..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="zatvori()">Otkaži</button>
+        <button class="btn btn-primary" (click)="sacuvaj()">
+          <i class="fa-solid fa-paper-plane me-2"></i>Pošalji
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

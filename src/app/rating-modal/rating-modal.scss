@@ -1,0 +1,25 @@
+/* src/app/rating-modal/rating-modal.scss */
+.modal-backdrop {
+  z-index: 1040;
+}
+
+.modal {
+  z-index: 1050;
+}
+
+.stars {
+  i {
+    color: #ffc107;
+    cursor: pointer;
+    transition: transform 0.15s ease-in-out;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}
+
+textarea.form-control {
+  border-radius: 0.5rem;
+  resize: none;
+}
