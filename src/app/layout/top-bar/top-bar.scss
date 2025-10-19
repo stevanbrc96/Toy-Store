@@ -86,3 +86,10 @@
 }
 
 }
+
+:host {
+  .form-select {
+    max-height: 250px;
+    overflow-y: auto;
+  }
+}

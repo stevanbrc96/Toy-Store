@@ -1,4 +1,4 @@
-<div class="container my-5">
+<div class="container my-5 fade-in">
   <header class="text-center mb-5">
     <h1 class="display-4">Naš Katalog</h1>
     <p class="lead text-muted">Sve igračke na jednom mestu</p>
@@ -6,7 +6,7 @@
 
   <div class="row">
     <aside class="col-lg-3 mb-4 mb-lg-0">
-      <div class="card shadow-sm position-sticky" style="top: 80px;">
+      <div class="card shadow-sm position-sticky filter-card" style="top: 80px;">
         <div class="card-header bg-light"><h5 class="mb-0">Filteri i Pretraga</h5></div>
         <div class="card-body">
 
@@ -26,7 +26,7 @@
                    min="0" 
                    [max]="igrackaService.maxPossiblePrice() / 2" 
                    [value]="igrackaService.minPrice()"
-                   (input)="igrackaService.minPrice.set(+$event.target.value)">
+                   (input)="igrackaService.minPrice.set(+$any($event.target).value)">
           </div>
 
           <div class="mb-3">
@@ -89,7 +89,7 @@
       </div>
     </aside>
 
-    <main class="col-lg-9">
+    <main class="col-lg-9 fade-in">
       <div class="d-flex justify-content-end mb-3">
         <select class="form-select w-auto" [ngModel]="igrackaService.sortBy()" (ngModelChange)="igrackaService.sortBy.set($event)">
           <option value="default">Sortiraj po</option>
@@ -115,14 +115,15 @@
                     </div>
                     <p class="card-text text-muted small">{{ igracka.description }}</p>
                     <ul class="list-group list-group-flush mt-3">
-                      <li class="list-group-item"><i class="fas fa-puzzle-piece text-primary me-2"></i><strong>Tip:</strong> {{ igracka.type.name }}</li>
-                      <li class="list-group-item"><i class="fas fa-child text-primary me-2"></i><strong>Uzrast:</strong> {{ igracka.ageGroup.name }}</li>
-                      <li class="list-group-item"><i class="fas fa-tag text-primary me-2"></i><strong>Cena:</strong> {{ igracka.price | currency : 'RSD ' }}</li>
+                      <li class="list-group-item"><i class="fa fa-puzzle-piece text-primary me-2"></i><strong>Tip:</strong> {{ igracka.type.name }}</li>
+                      <li class="list-group-item"><i class="fa fa-child text-primary me-2"></i><strong>Uzrast:</strong> {{ igracka.ageGroup.name }}</li>
+                      <li class="list-group-item"><i class="fa fa-tag text-primary me-2"></i><strong>Cena:</strong> {{ igracka.price | currency : 'RSD ' }}</li>
                     </ul>
                     <div class="mt-auto pt-3">
                       <button type="button" class="btn btn-primary w-100" 
                               (click)="$event.stopPropagation(); dodajIKorpa($event, igracka.toyId)" 
                               title="Rezerviši igračku"> 
+                              <i class="fa fa-cart-plus me-2"></i>
                               Dodaj u Korpu 
                       </button>
                     </div>
@@ -133,17 +134,16 @@
           }
         </div>
       } @else {
-        <div class="text-center py-5">
-          <div class="py-5">
-            <i class="fas fa-search fa-4x text-muted mb-4"></i>
-            <p class="lead text-muted">Nema igračaka koje odgovaraju zadatim kriterijumima.</p>
+          <div class="no-results">
+          <i class="fa fa-search"></i>
+          <p>Nema igračaka koje odgovaraju zadatim kriterijumima.</p>
           </div>
-        </div>
       }
     </main>
   </div>
 </div>
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3 mb-5" style="z-index: 1080;">
   <div class="toast align-items-center text-bg-primary border-0 shadow-sm fade"
        id="toastKorpa"
        role="alert"
@@ -151,7 +151,7 @@
        aria-atomic="true">
     <div class="d-flex">
       <div class="toast-body">
-        <i class="fa-solid fa-cart-plus me-2"></i>
+        <i class="fa fa-cart-plus me-2"></i>
         Igračka je dodata u korpu!
       </div>
       <button type="button" class="btn-close btn-close-white me-2 m-auto"

@@ -1,25 +1,23 @@
-/* src/app/rating-modal/rating-modal.scss */
-.modal-backdrop {
-  z-index: 1040;
+#ratingModal {
+  z-index: 2000 !important;
 }
 
-.modal {
-  z-index: 1050;
+.modal-backdrop.show {
+  z-index: 1900 !important;
 }
 
-.stars {
-  i {
-    color: #ffc107;
-    cursor: pointer;
-    transition: transform 0.15s ease-in-out;
+.modal-content {
+  border-radius: 0.75rem;
+  animation: fadeInModal 0.3s ease-in-out;
+}
 
-    &:hover {
-      transform: scale(1.2);
-    }
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-}
-
-textarea.form-control {
-  border-radius: 0.5rem;
-  resize: none;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,0 +1,29 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h2>O Projektu</h2>
+        </div>
+        <div class="card-body">
+          <p class="lead">
+            Aplikacija napravljena za ispit iz predmeta Programiranje i Dizajn Korisnickih Interfejsa.
+          </p>
+          
+          <hr class="my-4">
+          
+          <h5 class="mb-3">Korišćene Tehnologije:</h5>
+          
+          <ul class="list-group list-group-flush">
+            @for (tech of tehnologije; track tech.ime) {
+              <li class="list-group-item fs-5">
+                <i class="fa-fw me-3 {{ tech.ikonica }}"></i>
+                {{ tech.ime }}
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

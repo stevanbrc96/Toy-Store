@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IgrackaService } from '../../services/igracka.service';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-rating-modal',
@@ -14,35 +15,41 @@ export class RatingModal {
   private igrackaService = inject(IgrackaService);
 
   @Input() toyId!: number;
-  @Output() recenzijaDodata = new EventEmitter<void>(); 
+  @Output() recenzijaDodata = new EventEmitter<void>();
 
-  ocena: number = 0;
-  komentar: string = '';
-  prikazano: boolean = false;
+  ocena = signal(0);
+  komentar = signal('');
+
+  modal!: bootstrap.Modal;
+
+  ngAfterViewInit(): void {
+    const modalEl = document.getElementById('ratingModal');
+    if (modalEl) {
+      this.modal = new bootstrap.Modal(modalEl);
+    }
+  }
 
   otvori(): void {
-    this.prikazano = true;
-    this.ocena = 0;
-    this.komentar = '';
+    this.ocena.set(0);
+    this.komentar.set('');
+    if (this.modal) this.modal.show();
   }
 
   zatvori(): void {
-    this.prikazano = false;
+    if (this.modal) this.modal.hide();
   }
 
   postaviOcenu(vrednost: number): void {
-    this.ocena = vrednost;
+    this.ocena.set(vrednost);
   }
 
   sacuvaj(): void {
-    if (this.ocena === 0) {
+    if (this.ocena() === 0) {
       alert('Molimo vas da odaberete ocenu.');
       return;
     }
 
-    this.igrackaService.dodajRecenziju(this.toyId, this.ocena, this.komentar);
-
-    // ✅ signalizuj roditelju (ToyDetails) da se recenzije osveže
+    this.igrackaService.dodajRecenziju(this.toyId, this.ocena(), this.komentar());
     this.recenzijaDodata.emit();
 
     alert('Hvala na vašoj recenziji!');
