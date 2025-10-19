@@ -1,10 +1,6 @@
-<!-- =============================================================== -->
-<!-- Meni za DESKTOP (vidljiv samo na ekranima širim od 992px) -->
-<!-- =============================================================== -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm d-none d-lg-block">
   <div class="container">
     <div class="row w-100 align-items-center">
-      <!-- Leva Kolona: Logo i Glavni Linkovi -->
       <div class="col-4 d-flex align-items-center">
         <a class="navbar-brand" routerLink="/">
           <img src="/logo.png" alt="Logo" class="navbar-logo-desktop" />
@@ -20,12 +16,11 @@
             >
           </li>
           <li class="nav-item ms-3">
-            <a class="nav-link" routerLink="/details" >Detalji</a>
+            <a class="nav-link" routerLink="/details">Detalji</a>
           </li>
         </ul>
       </div>
 
-      <!-- Srednja kolona: SEARCH (DESKTOP) -->
       <div class="col-4 d-flex justify-content-center">
         <div class="styled-search-wrapper w-100" style="max-width: 400px">
           <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -38,42 +33,33 @@
           />
         </div>
       </div>
-
-      <!-- ======== MOBILNI/TABLET TOP (samo logo + search) ======== -->
-<header class="mobile-top d-lg-none bg-primary shadow-sm">
-  <div class="container d-flex align-items-center gap-2 py-2">
-    <a class="brand-mobile d-flex align-items-center" routerLink="/">
-      <img src="/logo.png" alt="Logo" class="logo-mobile">
-    </a>
-    <div class="flex-grow-1">
-      <div class="styled-search-wrapper w-100">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input
-          class="form-control styled-search-input"
-          type="search"
-          placeholder="Pretraži..."
-          [ngModel]="igrackaService.searchTerm()"
-          (ngModelChange)="igrackaService.searchTerm.set($event); onSearchChange()"
-        >
-      </div>
-    </div>
-  </div>
-</header>
-
-      <!-- ======== PRIJAVA DESNO ======== -->
-
+      
       <div class="col-4 d-flex justify-content-end">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav flex-row align-items-center">
+          
+          <li class="nav-item me-3">
+            <a class="nav-link" routerLink="/korpa" title="Moja Korpa">
+              <i class="fas fa-shopping-cart fa-lg"></i>
+            </a>
+          </li>
+          
           @if(userService.currentUser()) {
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+            >
               {{ userService.currentUser()?.firstName }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" routerLink="/profil">Moj Profil</a></li>
               <li><a class="dropdown-item" routerLink="/korpa">Moja Korpa</a></li>
               <li><hr class="dropdown-divider" /></li>
-              <li><button class="dropdown-item" (click)="logout()">Odjavi se</button></li>
+              <li>
+                <button class="dropdown-item" (click)="logout()">Odjavi se</button>
+              </li>
             </ul>
           </li>
           } @else {
@@ -87,9 +73,6 @@
   </div>
 </nav>
 
-<!-- =================================================================== -->
-<!-- Meni za MOBILNE i TABLETE -->
-<!-- =================================================================== -->
 <nav class="navbar navbar-dark bg-primary fixed-top shadow-sm d-lg-none">
   <div class="container">
     <div class="row w-100 align-items-center gx-3">
@@ -98,6 +81,7 @@
           <img src="/logo.png" alt="Logo" class="navbar-logo-mobile" />
         </a>
       </div>
+      
       <div class="col-6">
         <div class="styled-search-wrapper">
           <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -110,6 +94,7 @@
           />
         </div>
       </div>
+
       <div class="col-3">
       </div>
     </div>
