@@ -49,7 +49,7 @@ export class KorpaService {
     });
   }
 
-  // 🔹 Povećanje količine
+  //  Povećanje količine
   povecajKolicinu(igrackaId: number): void {
     this.korpaState.update(stanje => {
       return stanje.map(s => {
@@ -61,7 +61,7 @@ export class KorpaService {
     });
   }
 
-  // 🔹 Smanjenje količine
+  //  Smanjenje količine
   smanjiKolicinu(igrackaId: number): void {
     this.korpaState.update(stanje => {
       return stanje
@@ -77,19 +77,19 @@ export class KorpaService {
     });
   }
 
-  // 🔹 Uklanjanje stavke (ako nije otkazano)
+  //  Uklanjanje stavke (ako nije otkazano)
   ukloniStavku(igrackaId: number): void {
     this.korpaState.update(stanje =>
       stanje.filter(s => s.igracka.toyId !== igrackaId && s.status !== 'otkazano')
     );
   }
 
-  // 🔹 Isprazni korpu
+  //  Isprazni korpu
   isprazniKorpu(): void {
     this.korpaState.set([]);
   }
 
-  // 🔹 Promena statusa (interno korišćenje)
+  //  Promena statusa (interno korišćenje)
   private promeniStatus(igrackaId: number, noviStatus: 'rezervisano' | 'pristiglo' | 'otkazano'): void {
     this.korpaState.update(stanje =>
       stanje.map(s =>
@@ -98,7 +98,7 @@ export class KorpaService {
     );
   }
 
-  // 🔹 Ručno otkazivanje (ako bude potrebno)
+  // Ručno otkazivanje (ako bude potrebno)
   otkaziIgracku(igrackaId: number): void {
     this.promeniStatus(igrackaId, 'otkazano');
   }
