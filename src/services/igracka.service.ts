@@ -33,7 +33,7 @@ export class IgrackaService {
   public selectedAgeGroup = signal(0);
   public selectedTargetGroup = signal('svi');
   
-  // SIGNALI ZA NAPREDNO FILTRIRANJE
+  // SIGNALI ZA FILTRIRANJE
   public maxPrice = signal(10000);
   public minRating = signal(0);
   public sortBy = signal('default');
@@ -94,13 +94,12 @@ export class IgrackaService {
     this.loadInitialData();
   }
 
-  // UKLONJENA JE OBRADA SLIKE IZ SERVISA!
   private async loadInitialData(): Promise<void> {
     try {
       const igrackeRes = await axios.get<Igracka[]>(`${this.apiUrl}/toy`);
       const igrackeIzApi = igrackeRes.data;
       
-      // Ne vršimo obradu slika ovde. To radi ImageUtils u HomeComponent.
+      
       let igrackeZaObradu = igrackeIzApi;
 
       if (this.ratingsStore.size === 0) {
