@@ -4,11 +4,10 @@ import { CurrencyPipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router'; 
 import { IgrackaService } from '../../services/igracka.service';
-import { KorpaService } from '../../services/shopping-basket.service'; // NOVO: Dodat KorpaService
-import { Igracka } from '../../models/igracka.model'; // NOVO: Dodat Igracka model
+import { KorpaService } from '../../services/shopping-basket.service'; 
+import { Igracka } from '../../models/igracka.model'; 
 import { StarRating } from '../star-rating/star-rating'; 
 
-// Privremena Utils klasa za fiksiranje slika (OSTAJE JER GA KORISTI HTML)
 class ImageUtils {
     private baseUrl = 'https://toy.pequla.com/'; 
     getImageUrl(path: string): string {
