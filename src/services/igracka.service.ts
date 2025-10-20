@@ -11,7 +11,6 @@ export interface Uzrast { ageGroupId: number; name: string; }
 })
 export class IgrackaService {
   private apiUrl = 'https://toy.pequla.com/api';
-  // ratingsStore i recenzijeStore se koriste za simulaciju ocena
   private ratingsStore = new Map<number, number>();
   private recenzijeStore = new Map<number, Recenzija[]>([
     [1, [
