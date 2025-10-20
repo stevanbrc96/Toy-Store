@@ -25,7 +25,6 @@ export class KorpaService {
 
   constructor() {}
 
-  // 🔹 Dodavanje nove igračke u korpu
   dodajIgracku(igracka: Igracka, kolicina: number = 1): void {
     this.korpaState.update(stanje => {
       const postoji = stanje.find(s => s.igracka.toyId === igracka.toyId);
